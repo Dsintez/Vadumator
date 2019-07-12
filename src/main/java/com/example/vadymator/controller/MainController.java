@@ -1,8 +1,10 @@
 package com.example.vadymator.controller;
 
 import com.example.vadymator.domain.Message;
+import com.example.vadymator.domain.User;
 import com.example.vadymator.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +32,11 @@ public class MainController {
     }
 
     @PostMapping("/main")
-    public String add(@RequestParam String text, @RequestParam String tag, Map<String, Object> model){
+    public String add(
+            @AuthenticationPrincipal User user,
+            @RequestParam String text,
+            @RequestParam String tag, Map<String, Object> model
+    ){
         Message message = new Message(text, tag);
 
         messageRepo.save(message);
